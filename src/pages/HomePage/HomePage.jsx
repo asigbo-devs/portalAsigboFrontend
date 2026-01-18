@@ -19,7 +19,7 @@ function HomePage() {
   return (
     <div className={styles.HomePage}>
       <Banner
-        bannerImages={[fondo1, fondo4, fondo2, fondo3, fondo6, fondo5]}
+        bannerImages={[fondo4, fondo1, fondo2, fondo3, fondo6, fondo5]}
       />
       <div className={styles.page}>
         <h1 className={styles.helloName}>
