@@ -6,6 +6,7 @@ import fondo3 from '@assets/fondos/fondo3.webp';
 import fondo4 from '@assets/fondos/fondo4.webp';
 import fondo5 from '@assets/fondos/fondo5.webp';
 import fondo6 from '@assets/fondos/fondo6.webp';
+import fondo7 from '@assets/fondos/fondo7.webp';
 import Banner from '@components/Banner/Banner';
 import styles from './HomePage.module.css';
 import useToken from '../../hooks/useToken';
@@ -19,7 +20,7 @@ function HomePage() {
   return (
     <div className={styles.HomePage}>
       <Banner
-        bannerImages={[fondo4, fondo1, fondo2, fondo3, fondo6, fondo5]}
+        bannerImages={[fondo4, fondo1, fondo2, fondo7, fondo3, fondo6, fondo5]}
       />
       <div className={styles.page}>
         <h1 className={styles.helloName}>
