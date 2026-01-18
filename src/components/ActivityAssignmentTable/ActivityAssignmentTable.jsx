@@ -136,7 +136,7 @@ function ActivityAssignmentTable({ /* loading, data, */ listingType, id }) {
       page: currentPage,
       token,
     });
-  }, [search, initialDate, finalDate]);
+  }, [search, initialDate, finalDate, currentPage]);
 
   return (
     <div className={styles.activityTable}>
