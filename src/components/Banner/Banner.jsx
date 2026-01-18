@@ -14,7 +14,10 @@ function Banner({ bannerImages }) {
     const carrouselAnimation = gsap.timeline();
 
     for (let index = 1; index < bannerImages.length; index += 1) {
-      carrouselAnimation.to(refSlider.current, { css: { marginLeft: `-${index}00%` }, duration: 2, delay: 15 });
+      carrouselAnimation.to(refSlider.current, {
+        css: { marginLeft: `-${index}00%` },
+        duration: 1,
+      }, `+=${5}`);
     }
 
     // creando un bucle
@@ -34,10 +37,10 @@ function Banner({ bannerImages }) {
         }
       });
 
-      if (refSlider.current !== null)refSlider.current.style.marginLeft = 0;
+      if (refSlider.current !== null) refSlider.current.style.marginLeft = 0;
       carrouselAnimation.restart();
     });
-  }, []);
+  }, [bannerImages.length]);
 
   return (
     <div className={styles.banner}>
