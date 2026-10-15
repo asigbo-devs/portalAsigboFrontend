@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination } from '@mui/material';
 import { PiMicrosoftExcelLogoFill as ExcelIcon } from 'react-icons/pi';
+import { hasStudentIds, withStudentIdHeader } from '@helpers/studentIdColumn';
 import styles from './UsersReportTable.module.css';
 import PromotionsSearchSelect from '../PromotionsSearchSelect/PromotionsSearchSelect';
 import useFetch from '../../hooks/useFetch';
@@ -86,6 +87,8 @@ function UsersReportTable() {
       media.onchange = null;
     };
   }, []);
+  const showStudentId = hasStudentIds(reportResult?.result);
+
   return (
     <div className={styles.usersReportTable}>
       <div className={styles.filterContainer}>
@@ -105,7 +108,7 @@ function UsersReportTable() {
         />
       </div>
       <Table
-        header={['No.', '', 'Nombre', 'Promoción', 'Horas', 'Actividades']}
+        header={withStudentIdHeader(['No.', '', 'Nombre', 'Promoción', 'Horas', 'Actividades'], showStudentId)}
         loading={loadingReport}
         showNoResults={errorReport !== undefined && errorReport !== null}
         breakPoint="900px"
@@ -120,6 +123,7 @@ function UsersReportTable() {
             <td className={styles.nameRow}>
               <UserNameLink idUser={user.id} name={`${user.name} ${user.lastname ?? ''}`} />
             </td>
+            {showStudentId ? <td className={styles.promotionRow}>{user.studentId ?? '—'}</td> : []}
             <td className={styles.promotionRow}>{user.promotion}</td>
             <td>{user.totalHours}</td>
             <td>{user.activitiesCompleted}</td>

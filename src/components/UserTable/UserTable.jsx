@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserNameLink from '@components/UserNameLink';
+import { hasStudentIds, withStudentIdHeader } from '@helpers/studentIdColumn';
 import Table from '../Table/Table';
 import TableRow from '../TableRow/TableRow';
 import UserPicture from '../UserPicture';
@@ -10,10 +11,12 @@ import styles from './UserTable.module.css';
 function UserTable({
   users, loading, noResults, className,
 }) {
+  const showStudentId = hasStudentIds(users);
+
   return (
     <Table
       showCheckbox={false}
-      header={['No.', '', 'Nombre', 'Promoción']}
+      header={withStudentIdHeader(['No.', '', 'Nombre', 'Promoción'], showStudentId)}
       breakPoint="700px"
       loading={loading}
       className={className}
@@ -28,6 +31,7 @@ function UserTable({
           <td className={styles.nameRow}>
             <UserNameLink idUser={user.id} name={`${user.name} ${user.lastname ?? ''}`} />
           </td>
+          {showStudentId ? <td className={styles.promotionRow}>{user.studentId ?? '—'}</td> : []}
           <td className={styles.promotionRow}>{user.promotion}</td>
         </TableRow>
       ))}
@@ -46,6 +50,7 @@ UserTable.propTypes = {
     lastname: PropTypes.string,
     promotion: PropTypes.number.isRequired,
     hasImage: PropTypes.bool,
+    studentId: PropTypes.string,
   })),
   noResults: PropTypes.bool,
 };

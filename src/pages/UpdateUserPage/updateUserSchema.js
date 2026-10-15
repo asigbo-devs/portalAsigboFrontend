@@ -14,6 +14,10 @@ const updateUserSchema = yup.object().shape({
       return schema;
     }),
   sex: yup.string().matches(/^[MF]$/, "El campo 'sex' debe ser 'M' o 'F'.").required('Debes seleccionar el sexo del usuario.'),
+  studentId: yup
+    .string()
+    .trim()
+    .matches(/^\d{4,10}$/, { message: 'El carné debe tener entre 4 y 10 dígitos.', excludeEmptyString: true }),
   promotion: yup
     .number()
     .nullable()

@@ -9,6 +9,7 @@ import {
 import { AiFillCheckCircle as CheckIcon, AiFillCloseCircle as RemoveIcon } from 'react-icons/ai';
 
 import { useNavigate } from 'react-router-dom';
+import { hasStudentIds, withStudentIdHeader } from '@helpers/studentIdColumn';
 import styles from './SelectActivityParticipantsTable.module.css';
 import ActivityParticipantsTableFilter from '../ActivityParticipantsTableFilter/ActivityParticipantsTableFilter';
 import Table from '../Table/Table';
@@ -318,12 +319,14 @@ function ActivityParticipantsTable({ idActivity }) {
     ? users?.result
     : filterUsersByState();
 
+  const showStudentId = hasStudentIds(usersToShow);
+
   return (
     <>
       <ActivityParticipantsTableFilter onChange={handleUserFilterChange} />
 
       <Table
-        header={['No.', '', 'Nombre', 'Promoción', 'Estado', '']}
+        header={withStudentIdHeader(['No.', '', 'Nombre', 'Promoción', 'Estado', ''], showStudentId)}
         loading={(initialLoading || loadingUsers)}
         showNoResults={usersError !== undefined && usersError !== null}
         resetTableHeight={resetTableHeightTrigger}
@@ -342,6 +345,7 @@ function ActivityParticipantsTable({ idActivity }) {
               <td className={styles.nameRow}>
                 <UserNameLink idUser={user.id} name={`${user.name} ${user.lastname}`} />
               </td>
+              {showStudentId ? <td className={styles.promotionRow}>{user.studentId ?? '—'}</td> : []}
               <td className={styles.promotionRow}>{user.promotion}</td>
               <td className={styles.statusRow}>{currentStatus}</td>
               <td className={styles.buttonRow}>

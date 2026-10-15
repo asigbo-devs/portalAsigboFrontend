@@ -16,6 +16,7 @@ import LoadingView from '@components/LoadingView';
 import SuccessNotificationPopUp from '@components/SuccessNotificationPopUp';
 import ErrorNotificationPopUp from '@components/ErrorNotificationPopUp';
 import getTokenPayload from '@helpers/getTokenPayload';
+import { hasStudentIds, withStudentIdHeader } from '@helpers/studentIdColumn';
 import styles from './SelectAdminTable.module.css';
 import UserNameLink from '../UserNameLink/UserNameLink';
 
@@ -155,11 +156,13 @@ function SelectAdminTable() {
     setCurrentPage(0);
   };
 
+  const showStudentId = hasStudentIds(users?.result);
+
   return (
     <div className={styles.selectAdminTable}>
       <UserTableFilter hideActionButtons onChange={handleFilterChange} className={styles.filter} />
       <Table
-        header={['No.', '', 'Nombre', 'Promoción', '']}
+        header={withStudentIdHeader(['No.', '', 'Nombre', 'Promoción', ''], showStudentId)}
         showCheckbox={false}
         loading={(initialLoading || loadingUsers)}
         showNoResults={usersError !== undefined && usersError !== null}
@@ -174,6 +177,7 @@ function SelectAdminTable() {
             <td className={styles.nameRow}>
               <UserNameLink name={`${user.name} ${user.lastname}`} idUser={user.id} />
             </td>
+            {showStudentId ? <td className={styles.promotionRow}>{user.studentId ?? '—'}</td> : []}
             <td className={styles.promotionRow}>{user.promotion}</td>
             <td className={styles.buttonRow}>
               {user.role?.includes(consts.roles.admin) ? (

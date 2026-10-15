@@ -11,6 +11,7 @@ import { serverHost } from '@/config';
 import useCount from '@hooks/useCount';
 import UserNameLink from '@components/UserNameLink';
 import UserPicture from '@components/UserPicture';
+import { hasStudentIds, withStudentIdHeader } from '@helpers/studentIdColumn';
 import styles from './UserSelectTable.module.css';
 
 /**
@@ -156,6 +157,8 @@ function UserSelectTable({ defaultSelectedUsers, onChange }) {
     if (onChange) onChange(selectedUsers.map((user) => user.id));
   }, [selectedUsers]);
 
+  const showStudentId = hasStudentIds(users?.result);
+
   return (
     <>
       <UserTableFilter
@@ -172,7 +175,7 @@ function UserSelectTable({ defaultSelectedUsers, onChange }) {
         onDeleteAllClick={removeAllSelectedUsers}
       />
       <Table
-        header={['No.', '', 'Nombre', '']}
+        header={withStudentIdHeader(['No.', '', 'Nombre', ''], showStudentId)}
         maxCellWidth="200px"
         loading={loadingUsers}
         showNoResults={usersError !== undefined && usersError !== null}
@@ -190,6 +193,7 @@ function UserSelectTable({ defaultSelectedUsers, onChange }) {
               <td className={styles.nameRow}>
                 <UserNameLink idUser={user.id} name={`${user.name} ${user.lastname}`} />
               </td>
+              {showStudentId ? <td className={styles.promotionRow}>{user.studentId ?? '—'}</td> : []}
               <td className={styles.buttonRow}>
                 {selectedUsers.some((userData) => userData.id === user.id) ? (
                   <Button text="Remover" red onClick={() => removeUser(user)} />
