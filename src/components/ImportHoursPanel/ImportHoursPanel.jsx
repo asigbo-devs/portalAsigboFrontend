@@ -139,6 +139,7 @@ function ImportHoursPanel({ mode, idActivity, onDone }) {
           )}
 
           <h3 className={styles.sectionTitle}>Vista previa (aún no se ha guardado nada)</h3>
+          {errors.length === 0 && (
           <dl className={styles.summary}>
             <div>
               <dt>Actividades nuevas</dt>
@@ -165,6 +166,7 @@ function ImportHoursPanel({ mode, idActivity, onDone }) {
               <dd>{preview.hoursAdded}</dd>
             </div>
           </dl>
+          )}
 
           {errors.length > 0 && (
             <>
