@@ -1,15 +1,24 @@
 .importHoursPage {
   display: flex;
   flex-direction: column;
-  row-gap: 16px;
-  max-width: 900px;
+  row-gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  padding: var(--page-vertical-padding--) var(--page-horizontal-padding--);
 }
 
 .pageTitle {
   margin: 0;
+  font-size: var(--h1-title-size--);
 }
 
 .subtitle {
   margin: 0;
   line-height: 1.5;
+}
+
+@media only screen and (max-width: 500px) {
+  .pageTitle {
+    text-align: center;
+  }
 }
