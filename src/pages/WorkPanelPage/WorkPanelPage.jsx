@@ -2,6 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import { HiPuzzlePiece as PuzzleIcon } from 'react-icons/hi2';
 import { FaClipboardList as ListIcon, FaUsers as UsersIcon2 } from 'react-icons/fa';
+import { MdOutlineUploadFile as ImportHoursIcon } from 'react-icons/md';
 import { IoMdSettings as ConfigIcon } from 'react-icons/io';
 import styles from './WorkPanelPage.module.css';
 import PanelItem from '../../components/PanelItem/PanelItem';
@@ -33,6 +34,9 @@ function WorkPanelPage() {
 
             { (isAdmin || isAsigboAreaResponsible)
             && <PanelItem icon={<PuzzleIcon />} title="Encargado de área" href="/area" />}
+
+            { (isAdmin || isAsigboAreaResponsible || isActivityResponsible)
+            && <PanelItem icon={<ImportHoursIcon />} title="Importar horas" href="/actividad/importar-horas" />}
 
             {isActivityResponsible
             && <PanelItem icon={<ListIcon />} title="Encargado de actividad" href="/actividad/encargadas" />}

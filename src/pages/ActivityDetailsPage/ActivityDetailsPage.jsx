@@ -9,6 +9,7 @@ import {
   AiFillUnlock as EnableIcon,
   AiTwotoneEdit as EditIcon,
 } from 'react-icons/ai';
+import { MdOutlineUploadFile as ImportHoursIcon } from 'react-icons/md';
 import styles from './ActivityDetailsPage.module.css';
 import { serverHost } from '../../config';
 import useActivityByID from '../../hooks/useActivityByID';
@@ -27,6 +28,7 @@ import useSessionData from '../../hooks/useSessionData';
 import consts from '../../helpers/consts';
 import AssignToActivityButton from '../../components/AssignToActivityButton/AssignToActivityButton';
 import useCount from '../../hooks/useCount';
+import ImportHoursPopUp from '../../components/ImportHoursPopUp';
 
 function ActivityDetailsPage() {
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ function ActivityDetailsPage() {
   const [isSuccessOpen, openSuccess, closeSuccess] = usePopUp();
   const [isConfirmatonOpen, openConfirmaton, closeConfirmaton] = usePopUp();
   const [isErrorOpen, openError, closeError] = usePopUp();
+  const [isImportHoursOpen, openImportHours, closeImportHours] = usePopUp();
 
   const sessionUser = useSessionData();
 
@@ -98,6 +101,11 @@ function ActivityDetailsPage() {
       setIsAction(false);
     }
   }, [enDisError, deleteError]);
+
+  // Encargado de ESTA actividad (no necesariamente de su eje): también puede importar horas.
+  const isActivityResponsible = Boolean(
+    activity?.responsible?.some((person) => person.id === sessionUser?.id),
+  );
 
   useEffect(() => {
     if (isActivityOwner) return;
@@ -171,25 +179,32 @@ function ActivityDetailsPage() {
               />
               )}
 
-            {isActivityOwner && (
+            {(isActivityOwner || isActivityResponsible) && (
             <OptionsButton
               className={styles.optionsButton}
               label="Acciones"
               options={[
+                ...(isActivityOwner ? [
+                  {
+                    icon: <DeleteIcon />,
+                    text: 'Eliminar',
+                    onClick: handleDeleteActivity,
+                  },
+                  {
+                    icon: isDisabled ? <EnableIcon /> : <DisableIcon />,
+                    text: isDisabled ? 'Habilitar' : 'Deshabilitar',
+                    onClick: handleDisableActivity,
+                  },
+                  {
+                    icon: <EditIcon />,
+                    text: 'Editar',
+                    onClick: handleEditActivity,
+                  },
+                ] : []),
                 {
-                  icon: <DeleteIcon />,
-                  text: 'Eliminar',
-                  onClick: handleDeleteActivity,
-                },
-                {
-                  icon: isDisabled ? <EnableIcon /> : <DisableIcon />,
-                  text: isDisabled ? 'Habilitar' : 'Deshabilitar',
-                  onClick: handleDisableActivity,
-                },
-                {
-                  icon: <EditIcon />,
-                  text: 'Editar',
-                  onClick: handleEditActivity,
+                  icon: <ImportHoursIcon />,
+                  text: 'Importar horas',
+                  onClick: openImportHours,
                 },
               ]}
             />
@@ -252,6 +267,13 @@ function ActivityDetailsPage() {
             </>
           )
         }
+        />
+
+        <ImportHoursPopUp
+          isOpen={isImportHoursOpen}
+          close={closeImportHours}
+          idActivity={activity.id}
+          onDone={fireUpdateActivityTrigger}
         />
 
         <SuccessNotificationPopUp
