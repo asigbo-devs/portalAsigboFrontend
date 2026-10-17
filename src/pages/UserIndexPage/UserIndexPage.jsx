@@ -1,3 +1,4 @@
+import ImportHoursPage from '@pages/ImportHoursPage';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AvailableActivitiesPage from '@pages/AvailableActivitiesPage';
@@ -37,6 +38,9 @@ function UserIndexPage() {
         <Route path="/usuario/:userId" element={<UserProfileIndexPage />} />
         <Route path="actividad/encargadas" element={<ResponsibleActivitiesPage />} />
         <Route path="/actividad/disponible/*" element={<AvailableActivitiesPage />} />
+        {(isAreaResponsible || isActivityResponsible) && (
+          <Route path="/actividad/importar-horas" element={<ImportHoursPage />} />
+        )}
 
         {
           isAreaResponsible
