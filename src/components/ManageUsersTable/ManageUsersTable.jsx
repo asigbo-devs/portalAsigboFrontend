@@ -11,6 +11,7 @@ import { Pagination } from '@mui/material';
 import SuccessNotificationPopUp from '@components/SuccessNotificationPopUp';
 import ErrorNotificationPopUp from '@components/ErrorNotificationPopUp';
 import ConfirmationPopUp from '@components/ConfirmationPopUp';
+import { hasStudentIds, withStudentIdHeader } from '@helpers/studentIdColumn';
 import LoadingView from '../LoadingView/LoadingView';
 import Table from '../Table/Table';
 import TableRow from '../TableRow/TableRow';
@@ -258,6 +259,8 @@ function ManageUsersTable() {
     openError();
   }, [errorDelete]);
 
+  const showStudentId = hasStudentIds(users);
+
   return (
     <div className={styles.manageUsersTable}>
       <div className={styles.filtersContainer}>
@@ -274,7 +277,7 @@ function ManageUsersTable() {
       </div>
       <Table
         showCheckbox={false}
-        header={['No.', '', 'Nombre', 'Promoción', '']}
+        header={withStudentIdHeader(['No.', '', 'Nombre', 'Promoción', ''], showStudentId)}
         breakPoint="700px"
         resetTableHeight={resetTableHeightTrigger}
         loading={loadingUsers}
@@ -290,6 +293,7 @@ function ManageUsersTable() {
             <td className={styles.nameRow}>
               <UserNameLink idUser={user.id} name={`${user.name} ${user.lastname}`} />
             </td>
+            {showStudentId ? <td className={styles.promotionRow}>{user.studentId ?? '—'}</td> : []}
             <td className={styles.promotionRow}>{user.promotion}</td>
             <td className={styles.actionsRow}>
               <div className={styles.optionsContainer}>

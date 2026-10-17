@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line no-unused-vars
 import { Pagination } from '@mui/material';
+import { hasStudentIds, withStudentIdHeader } from '@helpers/studentIdColumn';
 import styles from './ActivityParticipantsTable.module.css';
 import Table from '../Table/Table';
 import useFetch from '../../hooks/useFetch';
@@ -42,16 +43,19 @@ function ActivityParticipantsTable({ idActivity }) {
           id: `${user.id}`,
           promotion: `${user.promotion}`,
           hasImage: user.hasImage,
+          studentId: user.studentId,
         };
       });
       setMappedItems(newItems);
     }
   }, [assignmentsResult]);
 
+  const showStudentId = hasStudentIds(mappedItems);
+
   return (
     <>
       <Table
-        header={['No.', '', 'Nombre', 'Promoción']}
+        header={withStudentIdHeader(['No.', '', 'Nombre', 'Promoción'], showStudentId)}
         loading={assignmetsLoading}
         breakPoint="1100px"
         showCheckbox={false}
@@ -71,6 +75,7 @@ function ActivityParticipantsTable({ idActivity }) {
                 name={user.name}
               />
             </td>
+            {showStudentId ? <td className={styles.promotionRow}>{user.studentId ?? '—'}</td> : []}
             <td className={styles.promotionRow}>{user.promotion}</td>
           </TableRow>
         ))}

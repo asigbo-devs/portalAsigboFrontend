@@ -64,6 +64,7 @@ function UserProfilePage({ idUser }) {
             element={(
               <ProfileUserData
                 email={user.email}
+                studentId={user.studentId}
                 campus={user.campus}
                 career={user.career}
                 sex={user.sex}

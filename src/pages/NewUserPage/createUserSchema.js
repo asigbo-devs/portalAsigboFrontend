@@ -10,6 +10,10 @@ export default yup.object().shape({
     .nullable()
     .typeError("El campo 'code' debe ser un número.")
     .integer("El campo 'code' debe ser un número entero."),
+  studentId: yup
+    .string()
+    .trim()
+    .matches(/^\d{4,10}$/, { message: 'El carné debe tener entre 4 y 10 dígitos.', excludeEmptyString: true }),
   promotion: yup
     .number()
     .nullable()

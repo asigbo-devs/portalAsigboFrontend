@@ -63,7 +63,7 @@ function UpdateUserPage({ userId }) {
     if (!user) return;
     // agregar los datos al hook form
     const {
-      name, lastname, email, promotion, career, sex, university, campus,
+      name, lastname, email, promotion, career, sex, university, campus, studentId,
     } = user;
 
     setForm({
@@ -75,6 +75,7 @@ function UpdateUserPage({ userId }) {
       sex,
       university,
       campus,
+      studentId: studentId ?? '',
     });
   }, [user]);
 
@@ -111,7 +112,12 @@ function UpdateUserPage({ userId }) {
     Object.entries(form).forEach((val) => (typeof (val[1]) === 'string' ? data.append(val[0], val[1].trim()) : data.append(val[0], val[1])));
 
     // Eliminar parámetros según permisos
-    if (!isAdmin) data.delete('promotion');
+    if (!isAdmin) {
+      data.delete('promotion');
+      data.delete('studentId');
+    }
+    // El carné vacío no se envía: por multipart no se puede quitar uno ya asignado.
+    if (!(form.studentId?.trim().length > 0)) data.delete('studentId');
     if (!(form.password?.length > 0) || userId !== sessionData?.id) {
       data.delete('password');
     }
@@ -181,6 +187,18 @@ function UpdateUserPage({ userId }) {
                 onFocus={() => clearFieldError('email')}
                 onBlur={() => validateField('email')}
               />
+
+              {isAdmin && (
+                <InputText
+                  title="Carné"
+                  name="studentId"
+                  onChange={handleChange}
+                  value={form?.studentId}
+                  error={error?.studentId}
+                  onFocus={() => clearFieldError('studentId')}
+                  onBlur={() => validateField('studentId')}
+                />
+              )}
 
               <InputSelect
                 placeholder=""

@@ -16,6 +16,7 @@ function ActivityResponsiblesTable({ activityData }) {
         name: `${value.name} ${value.lastname}`,
         promotion: value.promotion,
         hasImage: value.hasImage,
+        studentId: value.studentId,
       }));
       setResponsibles(newArr);
     }

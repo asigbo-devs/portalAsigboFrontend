@@ -37,9 +37,13 @@ function ImportExcelPopUp({ close, isOpen }) {
       }
 
       const headers = rows[0].map((header) => header.trim());
-      if (headers.toString() !== consts.importHeaders.toString()) {
+      // «Carné» es una columna opcional al final; sin ella la plantilla sigue siendo válida.
+      const expected = headers[headers.length - 1] === 'Carné'
+        ? [...consts.importHeaders, 'Carné']
+        : consts.importHeaders;
+      if (headers.toString() !== expected.toString()) {
         setError(true);
-        setErrorMessage('Formato incorrecto. Se espera que los encabezados sean: "Nombres, Apellidos, Correo, Promoción, Carrera, Universidad, Campus y Sexo".');
+        setErrorMessage('Formato incorrecto. Se espera que los encabezados sean: "Nombres, Apellidos, Correo, Promoción, Carrera, Universidad, Campus y Sexo" (y, opcionalmente, "Carné" al final).');
         return;
       }
 

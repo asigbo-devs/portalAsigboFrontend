@@ -34,6 +34,7 @@ function ImportUsersPage() {
       career: info.Carrera,
       promotion: info['Promoción'],
       sex: info.Sexo,
+      studentId: info['Carné'] ? `${info['Carné']}`.trim() : undefined,
     })));
 
   const [importedData, setImportedData] = useState(format(data));
@@ -80,6 +81,7 @@ function ImportUsersPage() {
           career: user.career?.trim(),
           university: user.university?.trim(),
           campus: user.campus?.trim(),
+          studentId: user.studentId || undefined,
         });
       }),
       sendEmail,

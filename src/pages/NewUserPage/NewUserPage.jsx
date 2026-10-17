@@ -62,6 +62,10 @@ function NewUserPage() {
       university: form.university?.trim(),
       campus: form.campus?.trim(),
     };
+    // El carné es opcional: un texto vacío no debe llegar al backend.
+    const studentId = form.studentId?.trim();
+    if (studentId) body.studentId = studentId;
+    else delete body.studentId;
 
     postUser({
       uri: `${serverHost}/user/`,
@@ -138,6 +142,15 @@ function NewUserPage() {
           onChange={handleFormChange}
           onFocus={() => clearFieldError('email')}
           onBlur={() => validateField('email')}
+        />
+        <InputText
+          title="Carné (opcional)"
+          name="studentId"
+          value={form?.studentId}
+          error={error?.studentId}
+          onChange={handleFormChange}
+          onFocus={() => clearFieldError('studentId')}
+          onBlur={() => validateField('studentId')}
         />
         <InputSelect
           options={[{ value: 'M', title: 'Masculino' }, { value: 'F', title: 'Femenino' }]}
